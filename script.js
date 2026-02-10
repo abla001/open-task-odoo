@@ -79,7 +79,7 @@ const createButtons = (ticketId, runbotTicketId, branchName) => {
 
 const run = () => {
   try {
-    const [branchElement, stickyBranchElement] = document.querySelectorAll('a[href*="odoo-dev"][class^="PullRequestBranchName"]');
+    const [branchElement, stickyBranchElement] = document.querySelectorAll('a[href*="odoo-dev"][title^="odoo-dev"]');
     
     const pullRequestBody = document.querySelector('.js-command-palette-pull-body')?.textContent;
     const branchTitle = (branchElement?.getAttribute("href") || stickyBranchElement?.getAttribute("href"))?.split("/").pop();
@@ -90,14 +90,14 @@ const run = () => {
     if (branchElement && !branchElement.closest("div").querySelector(".odoo-task-button, .odoo-branch-button")) {
       const container = branchElement;
       const buttons = createButtons(ticketId, runbotTicketId, branchTitle);
-      buttons.forEach(button => container.closest("span").lastElementChild.after(button));
+      buttons.forEach(button => container.closest("div").lastElementChild.after(button));
     }
 
     // Add buttons to sticky header
-    if (stickyBranchElement && !branchElement.closest("div").querySelector(".odoo-task-button, .odoo-branch-button")) {
+    if (stickyBranchElement && !stickyBranchElement.closest("div").querySelector(".odoo-task-button, .odoo-branch-button")) {
       const stickyContainer = stickyBranchElement;
       const buttons = createButtons(ticketId, runbotTicketId, branchTitle);
-      buttons.forEach(button => stickyContainer.closest("span").lastElementChild.after(button));
+      buttons.forEach(button => stickyContainer.closest("div").lastElementChild.after(button));
     }
   } catch (error) {
     console.log("Odoo github extension", error)
